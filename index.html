@@ -630,22 +630,14 @@
       height: 100%;
     }
 
-    /* 뒷면: 화면 높이를 넘지 않도록 제한 및 고정*/
+    /* 뒷면: 화면 높이를 넘지 않도록 제한 */
     #overlay-card-wrap .card-back {
       position: relative;
       transform: rotateY(180deg);
       overflow-y: hidden; /* 내부 letter-body에서 스크롤 처리됨 */
-      max-height: 80dvh; /* 동적 브라우저 UI 변화에 영향을 덜 받는 dvh 사용 (지원 브라우저 한정) */
-      height: 80dvh; /* 높이를 고정하여 스크롤 할 때 줄어들거나 늘어나지 않도록 함 */
+      max-height: 80vh; /* 화면의 80% 높이까지만 커지도록 제한 */
       display: flex;
       flex-direction: column;
-    }
-
-    @supports not (height: 80dvh) {
-      #overlay-card-wrap .card-back {
-        max-height: 80vh;
-        height: 80vh;
-      }
     }
 
     /* ── Quote Section ── */
