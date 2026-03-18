@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HBD for 뮴 💌</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Dodum&family=Playfair+Display:ital,wght@0,400;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cream: #fdf6ee;
+      --blush: #f5c6c6;
+      --rose: #e8899a;
+      --peach: #f7b89c;
+      --sage: #b5c9b0;
+      --lavender: #d4b8d8;
+      --gold: #c9956a;
+      --text-dark: #4a3728;
+      --text-mid: #7a5c4e;
+      --text-light: #a98070;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Gowun Dodum', serif;
+      background-color: var(--cream);
+      background-image: url('background/background.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text-dark);
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* 배경 그라데이션 오버레이 (상단은 어둡고, 스크롤 내릴수록 서서히 원래 이미지로 돌아감) */
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom,
+          rgba(0, 0, 0, 0.4) 0%,
+          rgba(0, 0, 0, 0.4) 100vh,
+          rgba(0, 0, 0, 0) calc(100vh + 300px));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #petal-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      z-index: 1;
+    }
+
+    .hero-wreath {
+      font-size: clamp(2rem, 6vw, 4rem);
+      letter-spacing: 12px;
+      margin-bottom: 8px;
+      animation: floatWreath 4s ease-in-out infinite;
+      filter: drop-shadow(0 4px 12px #f5c6c680);
+    }
+
+    @keyframes floatWreath {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .hero-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      color: #ffd1dc;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Nanum Myeongjo', serif;
+      font-weight: 800;
+      font-size: clamp(2.8rem, 10vw, 6.5rem);
+      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 2px 20px #e8899a80;
+      opacity: 0;
+      animation: fadeUp 1s 0.5s forwards;
+    }
+
+    .hero-title span {
+      color: var(--rose);
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-title span::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--blush), var(--peach));
+      border-radius: 3px;
+      opacity: 0.5;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: lineExpand 1s 1.2s forwards;
+    }
+
+    @keyframes lineExpand {
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    .hero-desc {
+      margin-top: 20px;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #fdf6ee;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+      max-width: 480px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 1s 0.8s forwards;
+    }
+
+    .hero-badge {
+      margin-top: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1.5px solid var(--blush);
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      color: var(--rose);
+      box-shadow: 0 4px 20px #f5c6c640;
+      opacity: 0;
+      animation: fadeUp 1s 1s forwards;
+      cursor: default;
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--rose);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-light);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      opacity: 0;
+      animation: fadeUp 1s 1.5s forwards;
+    }
+
+    .scroll-hint .scroll-text {
+      margin-right: -2px;
+      /* letter-spacing 여백 보정으로 시각적 중앙 정렬 완벽하게 */
+    }
+
+    .scroll-hint .arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid var(--rose);
+      border-bottom: 2px solid var(--rose);
+      transform: rotate(45deg);
+      animation: bounce 1.5s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: rotate(45deg) translateY(0);
+      }
+
+      50% {
+        transform: rotate(45deg) translateY(5px);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── Divider ── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 1.4rem;
+      letter-spacing: 16px;
+      color: #ffd1dc;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    }
+
+    /* ── Letters section ── */
+    .letters-section {
+      position: relative;
+      z-index: 1;
+      padding: 60px 20px 100px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      margin-bottom: 12px;
+    }
+
+    .section-title em {
+      font-style: normal;
+      color: var(--rose);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: #ffd1dc;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      font-size: 0.9rem;
+      margin-bottom: 56px;
+      letter-spacing: 1px;
+    }
+
+    /* ── Cards Grid ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    /* ══════════════════════════════════════
+       LETTER CARD
+    ══════════════════════════════════════ */
+    .letter-card {
+      position: relative;
+      cursor: pointer;
+      perspective: 1200px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+
+    .letter-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 3D flip wrapper */
+    .card-inner {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+      border-radius: 20px;
+    }
+
+    /* min-height 앞면 기준 */
+    .card-inner {
+      min-height: 200px;
+    }
+
+    /* front & back 공통 */
+    .card-front,
+    .card-back {
+      border-radius: 20px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    /* ── 앞면 ── */
+    .card-front {
+      position: relative;
+      background: white;
+      border: 1.5px solid #f0dbd8;
+      padding: 32px 28px 28px;
+      box-shadow: 0 8px 32px #e8899a18, 0 2px 8px #0000000a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      min-height: 200px;
+      justify-content: center;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .letter-card:hover .card-front {
+      box-shadow: 0 16px 48px #e8899a28, 0 4px 16px #0000001a;
+      transform: translateY(-4px);
+    }
+
+    /* flower sticker */
+    .card-front::before {
+      content: attr(data-flower);
+      position: absolute;
+      top: -10px;
+      right: 18px;
+      font-size: 1.4rem;
+      filter: drop-shadow(0 2px 4px #00000015);
+    }
+
+    .envelope-icon {
+      font-size: 2.4rem;
+      animation: wiggle 3s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+
+      0%,
+      90%,
+      100% {
+        transform: rotate(0deg);
+      }
+
+      93% {
+        transform: rotate(-5deg);
+      }
+
+      96% {
+        transform: rotate(5deg);
+      }
+    }
+
+    .card-from-label {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      letter-spacing: 1px;
+    }
+
+    .card-from {
+      font-family: 'Nanum Myeongjo', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-dark);
+    }
+
+    .card-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, #fce4ec, #fdf6ee);
+      border: 1px solid var(--blush);
+      color: var(--rose);
+      font-size: 0.72rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    .open-hint {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      opacity: 0.7;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    /* ── 뒷면 ── */
+    .card-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(160deg, #fffdf8 0%, #fff5f6 100%);
+      border: 1.5px solid #f0dbd8;
+      padding: 28px 26px;
+      transform: rotateY(180deg);
+      box-shadow: 0 8px 32px #e8899a18;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .card-back::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .card-back::-webkit-scrollbar-thumb {
+      background: var(--blush);
+      border-radius: 3px;
+    }
+
+    /* 닫기 버튼: rotateY(180deg)로 counter-rotate해서 글자가 정상으로 보임 */
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: white;
+      border: 1.5px solid var(--blush);
+      color: var(--text-light);
+      font-size: 0.9rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      transform: rotateY(180deg);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .close-btn:hover {
+      background: #fce4ec;
+      color: var(--rose);
+    }
+
+    .letter-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px dashed #f0dbd8;
+      flex-shrink: 0;
+    }
+
+    .letter-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .letter-author-name {
+      font-family: 'Nanum Myeongjo', serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+    }
+
+    .letter-author-sub {
+      font-size: 0.72rem;
+      color: var(--text-light);
+    }
+
+    .letter-body {
+      font-size: 0.92rem;
+      color: var(--text-mid);
+      line-height: 1.9;
+      white-space: pre-line;
+      flex: 1;
+    }
+
+    .letter-closing {
+      margin-top: 18px;
+      text-align: right;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--rose);
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       OVERLAY  —  카드가 가운데로 날아가는 레이어
+    ══════════════════════════════════════ */
+
+    #card-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      /* display 대신 visibility로 전환 → 퇴장 애니메이션이 끝난 뒤 숨김 */
+      visibility: hidden;
+      pointer-events: none;
+      transition: visibility 0s 0.55s;
+    }
+
+    #card-overlay.active {
+      visibility: visible;
+      pointer-events: auto;
+      transition: visibility 0s 0s;
+    }
+
+    #overlay-bg {
+      position: absolute;
+      inset: 0;
+      background: rgba(253, 246, 238, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+
+    #card-overlay.active #overlay-bg {
+      opacity: 1;
+    }
+
+    /* 오버레이 카드 래퍼 */
+    #overlay-card-wrap {
+      position: relative;
+      z-index: 2;
+      width: min(480px, calc(100vw - 40px));
+      perspective: 1200px;
+      opacity: 0;
+      transform: scale(0.88) translateY(20px);
+      transition: opacity 0.45s cubic-bezier(0.2, 0.8, 0.3, 1),
+        transform 0.45s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+
+    #card-overlay.active #overlay-card-wrap {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* card-inner flip */
+    #overlay-card-wrap .card-inner {
+      min-height: 200px;
+      transform: rotateY(0deg);
+      transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+    }
+
+    #overlay-card-wrap .card-inner.flipped {
+      transform: rotateY(180deg);
+    }
+
+    /* 앞면: 절대 배치하여 뒷면과 같은 공간을 차지하게 함 */
+    #overlay-card-wrap .card-front {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100%;
+    }
+
+    /* 뒷면: 스크롤 없이 내용 전체 표시 */
+    #overlay-card-wrap .card-back {
+      position: relative;
+      /* absolute 해제 → 높이를 내용이 결정 */
+      transform: rotateY(180deg);
+      overflow: visible;
+      max-height: none;
+    }
+
+    /* ── Quote Section ── */
+    .quote-section {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 20px 80px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .quote-text {
+      font-family: 'Nanum Myeongjo', serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      line-height: 2;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+      margin-bottom: 24px;
+      word-break: keep-all;
+    }
+
+    .quote-sub {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--rose);
+      letter-spacing: 1px;
+    }
+
+    .quote-sub span {
+      font-family: 'Gowun Dodum', serif;
+      font-style: normal;
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 20px 60px;
+      color: #fdf6ee;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+    }
+
+    footer .heart {
+      color: var(--rose);
+    }
+
+    @media (max-width: 520px) {
+      .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        /* 모바일에서 3개씩 넣을때는 간격을 줄이는게 예쁩니다 */
+      }
+
+      .card-front {
+        padding: 20px 10px;
+        /* 카드 안쪽 패딩도 줄여줍니다 */
+        min-height: 140px;
+      }
+
+      .envelope-icon {
+        font-size: 1.6rem;
+      }
+
+      .card-from {
+        font-size: 0.9rem;
+      }
+
+      .card-tag {
+        font-size: 0.65rem;
+        padding: 2px 8px;
+      }
+
+      .open-hint {
+        font-size: 0.65rem;
+      }
+
+      .divider {
+        font-size: 1rem;
+        letter-spacing: 10px;
+      }
+    }
+
+    /* ── 파티 컨페티 캔버스 ── */
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* ── 파티 버튼 ── */
+    #partyBtn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 200;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 2px solid var(--rose);
+      background: rgba(253, 246, 238, 0.85);
+      backdrop-filter: blur(8px);
+      color: var(--rose);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 18px rgba(232, 137, 154, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    #partyBtn:hover {
+      transform: scale(1.12);
+      box-shadow: 0 0 28px rgba(232, 137, 154, 0.6);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 파티 컨페티 -->
+  <canvas id="confettiCanvas"></canvas>
+  <!-- 파티 버튼 -->
+  <button id="partyBtn" title="파티 폭죽!">🎉</button>
+
+  <!-- 오버레이 (클릭시 열림) -->
+  <div id="card-overlay">
+    <div id="overlay-bg"></div>
+    <div id="overlay-card-wrap">
+      <div class="card-inner" id="overlay-inner">
+        <!-- 앞면 (뒤집히기 전 잠깐 보임) -->
+        <div class="card-front" id="overlay-front" data-flower="">
+          <div class="envelope-icon">💌</div>
+          <div>
+            <div class="card-from-label">FROM</div>
+            <div class="card-from" id="overlay-from-name"></div>
+          </div>
+          <div class="card-tag" id="overlay-from-tag"></div>
+        </div>
+        <!-- 뒷면 (편지 내용) -->
+        <div class="card-back" id="overlay-back">
+          <button class="close-btn" id="overlay-close">✕</button>
+          <div class="letter-header">
+            <div class="letter-avatar" id="overlay-avatar"></div>
+            <div>
+              <div class="letter-author-name" id="overlay-name"></div>
+              <div class="letter-author-sub" id="overlay-tag"></div>
+            </div>
+          </div>
+          <div class="letter-body" id="overlay-body"></div>
+          <div class="letter-closing" id="overlay-closing"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-wreath">🌸 🎂 🌸</div>
+    <p class="hero-sub">Happy Birthday</p>
+    <h1 class="hero-title"><span>뮴</span>에게</h1>
+    <p class="hero-desc">
+      언제나 환한 웃음으로 우리 곁에 있어줘서 고마워요 💗<br>
+      팬들이 마음을 담아 쓴 편지를 모아봤어요.
+    </p>
+    <div class="hero-badge">
+      <span class="dot"></span>
+      오늘은 특별한 날이에요 🎂
+    </div>
+    <div class="scroll-hint">
+      <span class="scroll-text">SCROLL</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <div class="divider">🌼 · · · 🌷 · · · 🌼</div>
+
+  <section class="letters-section">
+    <h2 class="section-title">뮤미단의 <em>마음</em>을 담아</h2>
+    <p class="section-subtitle">카드를 클릭하면 편지가 열려요 💌</p>
+    <div class="cards-grid" id="cardsGrid"></div>
+  </section>
+
+  <p class="quote-sub"
+    style="text-align: center; margin-bottom: 20px; font-size: clamp(1.5rem, 4vw, 2.2rem); color: #ffd1dc; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">
+    From
+    all your fans with
+    love 🤍</p>
+
+  <section class="quote-section">
+    <p class="quote-text">
+      "오늘 하루, 뮴님이 우리에게 준 행복만큼<br>
+      더 많은 사랑이 돌아오길 바랍니다."
+    </p>
+    <p class="quote-sub">Happy Birthday <span>뮴</span> 🎂</p>
+  </section>
+
+  <footer>
+    made with <span class="heart">♥</span> by 뮴's fans &nbsp;·&nbsp; 2026. 03. 29
+  </footer>
+
+  <script>
+    // ── DATA ──
+    const letters = [
+      {
+        from: "하늘", flower: "🍀", avatarBg: "#fff3e0",
+        body: `누나! 하늘이에요~!!
+
+생일축하해요!!🎂
+
+틱톡에서 누나를 알게 된 게 벌써 ~~일 째인데 시간 진짜 빠르다 그쵸?
+우리도 그동안 진짜 많이 친해졌다
+
+처음에 어쩌다 누나가 추천에 뜨길래 들어와서 지금까지 누나방송 오랫동안 볼 줄은 몰랐는데...
+
+제가 봐왔던 누나를 생각하면 방송 시작하기도, 오랫동안 하기도 쉽지 않았을 텐데.. 누나도 종종 말했듯 방송을 이렇게 오랫동안 할 줄은 누나 스스로도 몰랐다고 했었잖아요? 그리고 호스트로써 즐거운 일, 행복했던 순간도 있지만 분명 힘든 순간도 있었을 텐데 잘 버텨주고 어느새 곧 1년도 다 되어가고 지금까지 오래오래 방송해줘서 고마워요
+
+누나 라이브 보는 순간들은 저한텐 되게 소중한 시간인 것 같아요 누나랑 소통할 때는 매번 재밌고 좋으니까
+
+방송 1주년이 지나고 몇 년이 지나도, 어디서 뭘 하든 안 떠나고 항상 곁에서 응원하고 지켜줄게요
+
+세상에서 제일 행복한 하루 보내길~
+
+누나 우리 오래오래 보자!!!!`,
+        closing: "from 하늘"
+      },
+      {
+        from: "별하", flower: "🌸", avatarBg: "#fce4ec",
+        body: `뮴 언니, 생일 축하해요! 🎉
+
+처음 라이브에서 언니 목소리를 들었을 때부터 완전히 반해버렸어요. 그 따뜻한 목소리가 너무 좋아서 매일 밤 잠들기 전에 듣곤 해요.
+
+앞으로도 항상 건강하고, 하고 싶은 것 다 이루는 한 해가 되길 바랄게요 🌸`,
+        closing: "언제까지나 응원할게요, 별하 드림"
+      },
+      {
+        from: "민준", flower: "🌷", avatarBg: "#e8f5e9",
+        body: `생일 축하해요, 뮴 님! 🎂
+
+힘든 날에도 라이브 켜주셔서 정말 감사해요. 뮴 님 덕분에 웃게 되는 날이 얼마나 많은지 몰라요.
+
+그 에너지가 저한테도 전해져서 저도 더 열심히 살게 되더라고요. 감사하고 또 감사해요.`,
+        closing: "팬으로서 늘 자랑스러워요 💚"
+      },
+      {
+        from: "서연", flower: "🌼", avatarBg: "#ede7f6",
+        body: `뮴 언니, 생일 축하드려요 🌙✨
+
+새벽 라이브 때마다 함께해줘서 너무 감사해요. 잠 못 이루는 밤마다 언니 목소리 들으면서 위로받았어요.
+
+"오늘도 수고했어" 그 한마디가 얼마나 힘이 됐는지 몰라요. 앞으로도 건강하게, 오래오래 함께해요 🌸`,
+        closing: "밤을 지키는 팬, 서연 올림"
+      },
+      {
+        from: "준영", flower: "🌺", avatarBg: "#fce4ec",
+        body: `뮴님 생일 축하합니다! 🎊
+
+제 딸이 뮴님 팬인데, 딸이 뮴님 얘기를 어찌나 많이 하는지 저도 이렇게 팬이 돼버렸어요 😄
+
+앞으로도 예쁜 모습 많이 보여주세요. 저희 가족 모두 응원합니다!`,
+        closing: "준영 아빠, 뮴님 팬 되었습니다 🌺"
+      },
+      {
+        from: "아린", flower: "💐", avatarBg: "#e8f5e9",
+        body: `뮴 언니, 생일 축하해요 💐
+
+편지 처음 써보는데 너무 떨려요 ㅎㅎ 언니가 항상 "편지 써줘도 돼요~" 라고 해서 용기 냈어요.
+
+언니가 있어서 틱톡 보는 게 즐거워요. 앞으로도 자주 나타나 주세요 🥺💗`,
+        closing: "언니 최고야, 아린이가"
+      },
+    ];
+
+    // ── RENDER GRID CARDS ──
+    const grid = document.getElementById('cardsGrid');
+
+    letters.forEach((l, i) => {
+      const card = document.createElement('div');
+      card.className = 'letter-card';
+      card.innerHTML = `
+    <div class="card-inner">
+      <div class="card-front" data-flower="${l.flower}">
+        <div class="envelope-icon">💌</div>
+        <div>
+          <div class="card-from-label">FROM</div>
+          <div class="card-from">${l.from}</div>
+        </div>
+        <div class="open-hint">탭해서 열어보기 ✨</div>
+      </div>
+    </div>`;
+
+      card.addEventListener('click', () => openLetter(l));
+      grid.appendChild(card);
+
+      // 스크롤 등장
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          setTimeout(() => card.classList.add('visible'), i * 80);
+          obs.disconnect();
+        }
+      }, { threshold: 0.1 });
+      obs.observe(card);
+    });
+
+    // ── OVERLAY LOGIC ──
+    const overlay = document.getElementById('card-overlay');
+    const overlayInner = document.getElementById('overlay-inner');
+    const overlayBg = document.getElementById('overlay-bg');
+
+    function openLetter(l) {
+      // 오버레이 앞면 채우기
+      document.getElementById('overlay-front').setAttribute('data-flower', l.flower);
+      document.getElementById('overlay-from-name').textContent = l.from;
+      document.getElementById('overlay-from-tag').textContent = l.tag;
+
+      // 오버레이 뒷면 채우기
+      document.getElementById('overlay-avatar').style.background = l.avatarBg;
+      document.getElementById('overlay-avatar').textContent = l.flower;
+      document.getElementById('overlay-name').textContent = l.from;
+      document.getElementById('overlay-tag').textContent = l.tag;
+      document.getElementById('overlay-body').textContent = l.body;
+      document.getElementById('overlay-closing').textContent = l.closing;
+
+      // 뒤집기 초기화
+      overlayInner.classList.remove('flipped');
+
+      // 오버레이 표시
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // 살짝 딜레이 후 뒤집기 (앞면이 잠깐 보이다 뒤집히는 효과)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => overlayInner.classList.add('flipped'), 80);
+        });
+      });
+    }
+
+    function closeLetter() {
+      // 1. 뒤집기 되돌리기
+      overlayInner.classList.remove('flipped');
+
+      // 2. active 제거 → wrap이 fade+scale out, bg도 fade out
+      //    visibility는 CSS transition으로 0.55s 후 자동으로 hidden
+      setTimeout(() => {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }, 350); // 카드가 앞면으로 반쯤 돌아온 뒤 퇴장
+    }
+
+    document.getElementById('overlay-close').addEventListener('click', closeLetter);
+    // 배경 클릭으로도 닫기
+    overlayBg.addEventListener('click', closeLetter);
+
+
+
+    // ── 컨페티 파티 ──
+    (function () {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      let W, H;
+      let pieces = [];
+      let running = false;
+      let animId;
+
+      const colors = ['#e8c97a', '#f2a7b8', '#fce8ee', '#f5e0a0', '#a8e6cf', '#ffd3e0', '#c3b1e1'];
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function launch() {
+        if (running) return;
+        running = true;
+        canvas.style.opacity = '1';
+        pieces = [];
+        for (let i = 0; i < 100; i++) { // 갯수 200 -> 100개로 축소시켜 성능 확보 (끊김 방지)
+          pieces.push({
+            x: Math.random() * W,
+            y: Math.random() * H * 0.5 - H * 0.3,
+            w: Math.random() * 12 + 6, // 크기를 살짝 더 키워서 갯수가 적은걸 보완
+            h: Math.random() * 6 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            vx: (Math.random() - 0.5) * 4,
+            vy: Math.random() * 4 + 2,
+            rot: Math.random() * 360,
+            rotV: (Math.random() - 0.5) * 6,
+            opacity: 1
+          });
+        }
+        loop();
+        setTimeout(() => {
+          cancelAnimationFrame(animId);
+          ctx.clearRect(0, 0, W, H);
+          canvas.style.opacity = '0';
+          running = false;
+        }, 3500);
+      }
+
+      function loop() {
+        ctx.clearRect(0, 0, W, H);
+        pieces.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.08;
+          p.rot += p.rotV;
+          if (p.y > H * 0.85) p.opacity -= 0.04;
+
+          if (p.opacity > 0) { // 화면 밖으로 나간 엘리먼트 렌더링 스킵 (최적화)
+            ctx.save();
+            ctx.globalAlpha = p.opacity;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot * Math.PI / 180);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+        });
+        animId = requestAnimationFrame(loop);
+      }
+
+      document.getElementById('partyBtn').addEventListener('click', launch);
+
+      // 처음 웹페이지에 접속했을 때 폭죽이 터지도록
+      setTimeout(launch, 500);
+    })();
+  </script>
+</body>
+
+</html>
