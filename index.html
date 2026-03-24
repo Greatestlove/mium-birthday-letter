@@ -409,6 +409,7 @@
       font-size: 0.78rem;
       color: var(--text-light);
       letter-spacing: 1px;
+      text-align: center;
     }
 
     .card-from {
@@ -416,17 +417,7 @@
       font-weight: 700;
       font-size: 1.05rem;
       color: var(--text-dark);
-    }
-
-    .card-tag {
-      display: inline-block;
-      background: linear-gradient(135deg, #fce4ec, #fdf6ee);
-      border: 1px solid var(--blush);
-      color: var(--rose);
-      font-size: 0.72rem;
-      padding: 3px 12px;
-      border-radius: 20px;
-      letter-spacing: 0.5px;
+      text-align: center;
     }
 
     .open-hint {
@@ -626,14 +617,12 @@
       transform: rotateY(180deg);
     }
 
-    /* 앞면: 절대 배치하여 뒷면과 같은 공간을 차지하게 함 */
+    /* 앞면: 화면 높이에 따라 늘어나지 않게 고정 크기로 가운데 정렬 (크기는 JS로 letter-card에 맞춰짐) */
     #overlay-card-wrap .card-front {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     /* 뒷면: 화면 높이를 넘지 않도록 제한 */
@@ -720,10 +709,7 @@
         font-size: 0.9rem;
       }
 
-      .card-tag {
-        font-size: 0.65rem;
-        padding: 2px 8px;
-      }
+
 
       .open-hint {
         font-size: 0.65rem;
@@ -796,7 +782,6 @@
             <div class="card-from-label">FROM</div>
             <div class="card-from" id="overlay-from-name"></div>
           </div>
-          <div class="card-tag" id="overlay-from-tag"></div>
         </div>
         <!-- 뒷면 (편지 내용) -->
         <div class="card-back" id="overlay-back">
@@ -805,7 +790,6 @@
             <div class="letter-avatar" id="overlay-avatar"></div>
             <div>
               <div class="letter-author-name" id="overlay-name"></div>
-              <div class="letter-author-sub" id="overlay-tag"></div>
             </div>
           </div>
           <div class="letter-body" id="overlay-body"></div>
@@ -864,12 +848,12 @@
     // ── DATA ──
     const letters = [
       {
-        from: "하늘", flower: "🍀", avatarBg: "#fff3e0",
+        from: "하늘🫦🏎️", flower: "🍀", avatarBg: "#fff3e0",
         body: `누나! 하늘이에요~!!
 
 생일축하해요!!🎂
 
-틱톡에서 누나를 알게 된 게 벌써 ~~일 째인데 
+틱톡에서 누나를 알게 된 게 벌써 249일 째인데 
 시간 진짜 빠르다 그쵸?
 우리도 그동안 진짜 많이 친해졌다
 
@@ -882,65 +866,74 @@
 누나 스스로도 몰랐다고 했었잖아요? 
 그리고 호스트로써 즐거운 일, 행복했던 순간도 있지만 
 분명 힘든 순간도 있었을 텐데 
-잘 버텨주고 어느새 곧 1년도 다 되어가고 지금까지 오래오래 방송해줘서 고마워요
+잘 버텨주고 어느새 곧 1년도 다 되어가는데
+지금까지 오래오래 방송해줘서 고마워요
 
-누나 라이브 보는 순간들은 저한텐 
+누나 라이브 보는 순간들은 저한텐
 엄청 소중한 시간인 것 같아요 
 누나랑 소통할 때는 매번 재밌고 좋으니까
+채팅으로는 오글거려서 별로 말하지는 못했지만
+누나가 방송 켜줄 때마다 항상 와줘서 고마워요
 
-방송 1주년이 지나고 몇 년이 지나도, 
-어디서 뭘 하든 안 떠나고 
-항상 곁에서 응원하고 지켜줄게요
+방송 1주년이 지나고 몇 년이 지나도
+언제나 누나 팬으로 남아서 곁에서
+지금처럼 늘 한결같이 응원할게요
 
-세상에서 제일 행복한 하루 보내길~
+오늘뿐만이 아니라 세상에서 가장 행복한 사람이 되길~~
 
 누나 우리 오래오래 보자!!!!`,
         closing: "from 하늘"
       },
       {
-        from: "별하", flower: "🌸", avatarBg: "#fce4ec",
-        body: `뮴 언니, 생일 축하해요! 🎉
-
-처음 라이브에서 언니 목소리를 들었을 때부터 완전히 반해버렸어요. 그 따뜻한 목소리가 너무 좋아서 매일 밤 잠들기 전에 듣곤 해요.
-
-앞으로도 항상 건강하고, 하고 싶은 것 다 이루는 한 해가 되길 바랄게요 🌸`,
-        closing: "언제까지나 응원할게요, 별하 드림"
+        from: "𝓜𝓲𝓝🫦🏎️", flower: "🌸", avatarBg: "#fce4ec",
+        body: `뮴님!! 생일 축하드려요!🎉
+평소에 방송 보면서 채팅으로만 인사하다가, 생일이라해서 이렇게 몇 자 적어보네요. 매일 정해진 시간에 방송 켜고 텐션 유지하는 게 보통 일이 아닐 텐데, 항상 꾸준히 소통해주시는 모습 보면서 대단하다고 생각했어요 뮴님 방송 덕분에 저도 퇴근하고 기분 전환 할 때가 많아서 늘 고맙게 생각합니다.🙇🏻
+오늘 하루는 방송 생각 너무 하지 말고 맛있는 거 많이 먹으며 주변 사람들과 즐겁게 보냈으면 좋겠어요. 너무 무리해서 목 쓰지 마시고 건강도 잘 챙기시고요! 지금처럼만 편하게 오래 소통했으면 좋겠습니다. 다시 한번 생일 축하드려요!"😁`,
+        closing: "from 𝓜𝓲𝓝"
       },
       {
-        from: "민준", flower: "🌷", avatarBg: "#e8f5e9",
-        body: `생일 축하해요, 뮴 님! 🎂
-
-힘든 날에도 라이브 켜주셔서 정말 감사해요. 뮴 님 덕분에 웃게 되는 날이 얼마나 많은지 몰라요.
-
-그 에너지가 저한테도 전해져서 저도 더 열심히 살게 되더라고요. 감사하고 또 감사해요.`,
-        closing: "팬으로서 늘 자랑스러워요 💚"
+        from: "Y0UNG", flower: "🌷", avatarBg: "#e8f5e9",
+        body: `누나 생일 진심으로 축하드립니다잉ㅋㅋ하늘님 다음으로 가장 많이 축하 해드릴게요~HBD 뮴 !!`,
+        closing: "from Y0UNG"
       },
       {
-        from: "서연", flower: "🌼", avatarBg: "#ede7f6",
-        body: `뮴 언니, 생일 축하드려요 🌙✨
-
-새벽 라이브 때마다 함께해줘서 너무 감사해요. 잠 못 이루는 밤마다 언니 목소리 들으면서 위로받았어요.
-
-"오늘도 수고했어" 그 한마디가 얼마나 힘이 됐는지 몰라요. 앞으로도 건강하게, 오래오래 함께해요 🌸`,
-        closing: "밤을 지키는 팬, 서연 올림"
+        from: "Kwony37 🫦🏎️", flower: "🌼", avatarBg: "#ede7f6",
+        body: `안녕하세요 워니37 입니다.  항상 하루의 마무리를 기분 좋게 마무리하고 힐링 하게 해주시는 뮴님 개인적으로 여러 힘든 일이 있었을때 뮴님의 편한안 목소리와 끝을 모를 미모를 보고 입덕 하게 되었지요 항상 고맙습니다. 생일 진심으로 축하하고 하루하루 행복하세요. only뮴. 워니올림`,
+        closing: "from Kwony37"
       },
       {
-        from: "준영", flower: "🌺", avatarBg: "#fce4ec",
-        body: `뮴님 생일 축하합니다! 🎊
-
-제 딸이 뮴님 팬인데, 딸이 뮴님 얘기를 어찌나 많이 하는지 저도 이렇게 팬이 돼버렸어요 😄
-
-앞으로도 예쁜 모습 많이 보여주세요. 저희 가족 모두 응원합니다!`,
-        closing: "준영 아빠, 뮴님 팬 되었습니다 🌺"
+        from: "🌞🎠데이지🎠🌞💚꼬북🐢", flower: "🌺", avatarBg: "#fce4ec",
+        body: `뮴아. 안녕~  널 첨본게. 엊그제같은데 참 시간이빠르다 
+넌 첨봤을때나  지금이나 한결같이 이쁘고. 방송도 열심히하는거같아. ㅎㅎ. 생일축하하고.  늘 한결같은 그모습 변하지않고 오래 방송해줘.  뮴이 제일오래된 시청자 꼬북💚🐢`,
+        closing: "from 꼬북"
       },
       {
-        from: "아린", flower: "💐", avatarBg: "#e8f5e9",
-        body: `뮴 언니, 생일 축하해요 💐
+        from: "Relax", flower: "💐", avatarBg: "#e8f5e9",
+        body: `‘두서없이 쓰는 글이지만 이해바랄게. 오래오래 행복한 방송 하고.. 벌써 1년이 다되간다 그치 첨엔 매치 나가는 법도 모르던 꼬맹이였눈디 고여버렸어.. 처음엔 방송하는 것도 좀 힘들어하는 것 같던데 지금은 잘 적응한 것 같아서 보기 좋다. 너,,, 내 생일은 까먹었지만 봐드릴게. 내가 이제 잘 안들어오니까 너도 잘 안울게되고 ㅎㅎㅎ 여하튼 응원할게 수면제는 너무 자주 먹지말고 ㅋㅋ 생일 축하한디~~`,
+        closing: "from Relax"
+      },
+      {
+        from: "KY 🫦🏎️", flower: "🍀", avatarBg: "#e8f5e9",
+        body: `🎉🎂お誕生日おめでとうございます🎂🎉
 
-편지 처음 써보는데 너무 떨려요 ㅎㅎ 언니가 항상 "편지 써줘도 돼요~" 라고 해서 용기 냈어요.
+ミウミさんの笑顔は、まるで太陽みたいで☀️✨いつもたくさん元気をもらっています🥰💖
 
-언니가 있어서 틱톡 보는 게 즐거워요. 앞으로도 자주 나타나 주세요 🥺💗`,
-        closing: "언니 최고야, 아린이가"
+（韓国／日本）言葉が伝わらなくても🌏💫ミウミさんの笑顔を見ると、私も自然と笑顔になります😊🌸
+
+ミウミさんにとって、笑顔あふれる素敵な1年になりますように🌈🎁✨これからもずっと応援しています📣💗
+
+from KY 💌`,
+        closing: "from KY"
+      },
+      {
+        from: "꾸르", flower: "🌸", avatarBg: "#e8f5e9",
+        body: `뮴뮤루뮴 생일축하합니다 생일축하합니다 사랑하는 뮴뮤루뮴뮴 생일축하합니다❤️`,
+        closing: "from 꾸르"
+      },
+      {
+        from: "신디✨️뭐꼬🎶", flower: "🌷", avatarBg: "#e8f5e9",
+        body: `새로운 방을 잘 안가는 제가 어쩌다 들리게되어 얇디얇은 인연을 이어가고 있는데요ㅋㅋㅋ조금더 굵어져 보도록 노력'은' 해보겠습니다. 생일진심으로 축하드립니다 !! 다른거보다 방송 대박납시다`,
+        closing: "from 꼬난"
       },
     ];
 
@@ -962,7 +955,7 @@
       </div>
     </div>`;
 
-      card.addEventListener('click', () => openLetter(l));
+      card.addEventListener('click', (e) => openLetter(l, e.currentTarget));
       grid.appendChild(card);
 
       // 스크롤 등장
@@ -980,22 +973,45 @@
     const overlayInner = document.getElementById('overlay-inner');
     const overlayBg = document.getElementById('overlay-bg');
 
-    function openLetter(l) {
+    let resizeHandler = null;
+
+    function openLetter(l, clickedCard) {
+      const overlayFront = document.getElementById('overlay-front');
       // 오버레이 앞면 채우기
-      document.getElementById('overlay-front').setAttribute('data-flower', l.flower);
+      overlayFront.setAttribute('data-flower', l.flower);
       document.getElementById('overlay-from-name').textContent = l.from;
-      document.getElementById('overlay-from-tag').textContent = l.tag;
 
       // 오버레이 뒷면 채우기
       document.getElementById('overlay-avatar').style.background = l.avatarBg;
       document.getElementById('overlay-avatar').textContent = l.flower;
       document.getElementById('overlay-name').textContent = l.from;
-      document.getElementById('overlay-tag').textContent = l.tag;
       document.getElementById('overlay-body').textContent = l.body;
       document.getElementById('overlay-closing').textContent = l.closing;
 
       // 뒤집기 초기화
       overlayInner.classList.remove('flipped');
+
+      // 반응형 크기 동기화 로직 적용 (비율 유지하며 화면에 맞게 확대)
+      const syncSize = () => {
+        if (!clickedCard) return;
+        const rect = clickedCard.getBoundingClientRect();
+
+        overlayFront.style.transition = 'none';
+        overlayFront.style.width = rect.width + 'px';
+        overlayFront.style.height = rect.height + 'px';
+
+        // 팝업 안에서 보여줄 한층 더 큰 너비 (최대 380px, 모바일에서도 양옆 여백 확보)
+        const idealWidth = Math.min(380, window.innerWidth - 60);
+        const scaleAmount = idealWidth / rect.width;
+
+        // CSS 설정인 translate 가운데 정렬을 유지하며 scale()을 통한 확대 적용
+        overlayFront.style.transform = `translate(-50%, -50%) scale(${scaleAmount})`;
+      };
+
+      syncSize(); // 열 때 즉시 맞춤
+      if (resizeHandler) window.removeEventListener('resize', resizeHandler);
+      resizeHandler = syncSize;
+      window.addEventListener('resize', resizeHandler);
 
       // 오버레이 표시
       overlay.classList.add('active');
@@ -1010,6 +1026,10 @@
     }
 
     function closeLetter() {
+      if (resizeHandler) {
+        window.removeEventListener('resize', resizeHandler);
+        resizeHandler = null;
+      }
       // 1. 뒤집기 되돌리기
       overlayInner.classList.remove('flipped');
 
