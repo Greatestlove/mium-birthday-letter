@@ -991,21 +991,14 @@ from KY 💌`,
       // 뒤집기 초기화
       overlayInner.classList.remove('flipped');
 
-      // 반응형 크기 동기화 로직 적용 (비율 유지하며 화면에 맞게 확대)
+      // 반응형 크기 동기화 로직 적용 (letter-card와 완전히 동일한 크기)
       const syncSize = () => {
         if (!clickedCard) return;
         const rect = clickedCard.getBoundingClientRect();
-
-        overlayFront.style.transition = 'none';
+        overlayFront.style.transition = '';
+        overlayFront.style.transform = '';
         overlayFront.style.width = rect.width + 'px';
         overlayFront.style.height = rect.height + 'px';
-
-        // 팝업 안에서 보여줄 한층 더 큰 너비 (최대 380px, 모바일에서도 양옆 여백 확보)
-        const idealWidth = Math.min(380, window.innerWidth - 60);
-        const scaleAmount = idealWidth / rect.width;
-
-        // CSS 설정인 translate 가운데 정렬을 유지하며 scale()을 통한 확대 적용
-        overlayFront.style.transform = `translate(-50%, -50%) scale(${scaleAmount})`;
       };
 
       syncSize(); // 열 때 즉시 맞춤
