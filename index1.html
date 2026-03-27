@@ -526,8 +526,28 @@
       font-size: 0.92rem;
       color: var(--text-mid);
       line-height: 1.9;
-      white-space: pre-line;
+      white-space: pre-wrap;
+      /* pre-line에서 pre-wrap으로 변경하여 줄바꿈 유지 강화 */
       flex: 1;
+      overflow-y: auto;
+      /* 내용이 길어질 경우 스크롤 생성 */
+      padding-right: 8px;
+      /* 스크롤바 영역 확보 */
+    }
+
+    /* 스크롤바 디자인 추가 */
+    .letter-body::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .letter-body::-webkit-scrollbar-thumb {
+      background: rgba(245, 198, 198, 0.6);
+      /* --blush 색상에 투명도 적용 */
+      border-radius: 4px;
+    }
+
+    .letter-body::-webkit-scrollbar-track {
+      background: transparent;
     }
 
     .letter-closing {
@@ -616,13 +636,16 @@
       height: 100%;
     }
 
-    /* 뒷면: 스크롤 없이 내용 전체 표시 */
+    /* 뒷면: 화면 높이를 넘지 않도록 제한 */
     #overlay-card-wrap .card-back {
       position: relative;
-      /* absolute 해제 → 높이를 내용이 결정 */
       transform: rotateY(180deg);
-      overflow: visible;
-      max-height: none;
+      overflow-y: hidden;
+      /* 내부 letter-body에서 스크롤 처리됨 */
+      max-height: 80vh;
+      /* 화면의 80% 높이까지만 커지도록 제한 */
+      display: flex;
+      flex-direction: column;
     }
 
     /* ── Quote Section ── */
@@ -846,16 +869,28 @@
 
 생일축하해요!!🎂
 
-틱톡에서 누나를 알게 된 게 벌써 ~~일 째인데 시간 진짜 빠르다 그쵸?
+틱톡에서 누나를 알게 된 게 벌써 ~~일 째인데 
+시간 진짜 빠르다 그쵸?
 우리도 그동안 진짜 많이 친해졌다
 
-처음에 어쩌다 누나가 추천에 뜨길래 들어와서 지금까지 누나방송 오랫동안 볼 줄은 몰랐는데...
+처음에 어쩌다 누나가 추천에 뜨길래 들어와서 
+지금까지 누나방송 오랫동안 볼 줄은 몰랐는데...
 
-제가 봐왔던 누나를 생각하면 방송 시작하기도, 오랫동안 하기도 쉽지 않았을 텐데.. 누나도 종종 말했듯 방송을 이렇게 오랫동안 할 줄은 누나 스스로도 몰랐다고 했었잖아요? 그리고 호스트로써 즐거운 일, 행복했던 순간도 있지만 분명 힘든 순간도 있었을 텐데 잘 버텨주고 어느새 곧 1년도 다 되어가고 지금까지 오래오래 방송해줘서 고마워요
+제가 봐왔던 누나를 생각하면 방송 시작하기도, 
+오랫동안 하기도 쉽지 않았을 텐데.. 
+누나도 종종 말했듯 방송을 이렇게 오랫동안 할 줄은 
+누나 스스로도 몰랐다고 했었잖아요? 
+그리고 호스트로써 즐거운 일, 행복했던 순간도 있지만 
+분명 힘든 순간도 있었을 텐데 
+잘 버텨주고 어느새 곧 1년도 다 되어가고 지금까지 오래오래 방송해줘서 고마워요
 
-누나 라이브 보는 순간들은 저한텐 되게 소중한 시간인 것 같아요 누나랑 소통할 때는 매번 재밌고 좋으니까
+누나 라이브 보는 순간들은 저한텐 
+엄청 소중한 시간인 것 같아요 
+누나랑 소통할 때는 매번 재밌고 좋으니까
 
-방송 1주년이 지나고 몇 년이 지나도, 어디서 뭘 하든 안 떠나고 항상 곁에서 응원하고 지켜줄게요
+방송 1주년이 지나고 몇 년이 지나도, 
+어디서 뭘 하든 안 떠나고 
+항상 곁에서 응원하고 지켜줄게요
 
 세상에서 제일 행복한 하루 보내길~
 

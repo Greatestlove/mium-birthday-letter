@@ -753,33 +753,6 @@
       opacity: 0;
       transition: opacity 0.3s;
     }
-
-    /* ── 파티 버튼 ── */
-    #partyBtn {
-      position: fixed;
-      bottom: 28px;
-      right: 28px;
-      z-index: 200;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      border: 2px solid var(--rose);
-      background: rgba(253, 246, 238, 0.85);
-      backdrop-filter: blur(8px);
-      color: var(--rose);
-      font-size: 22px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 18px rgba(232, 137, 154, 0.35);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    #partyBtn:hover {
-      transform: scale(1.12);
-      box-shadow: 0 0 28px rgba(232, 137, 154, 0.6);
-    }
   </style>
 </head>
 
@@ -787,8 +760,6 @@
 
   <!-- 파티 컨페티 -->
   <canvas id="confettiCanvas"></canvas>
-  <!-- 파티 버튼 -->
-  <button id="partyBtn" title="파티 폭죽!">🎉</button>
 
   <!-- 오버레이 (클릭시 열림) -->
   <div id="card-overlay">
@@ -869,7 +840,7 @@
     const letters = [
       {
         from: "하늘🫦🏎️", flower: "🍀", avatarBg: "#fff3e0",
-        body: `누나! 하늘이에요~!!
+        body: `누나! 하늘이에요~
 
 생일축하해요!!🎂
 
@@ -892,16 +863,17 @@
 누나 라이브 보는 순간들은 저한텐
 엄청 소중한 시간인 것 같아요 
 누나랑 소통할 때는 매번 재밌고 좋으니까
+
 채팅으로는 오글거려서 별로 말하지는 못했지만
 누나가 방송 켜줄 때마다 항상 와줘서 고마워요
 
-방송 1주년이 지나고 몇 년이 지나도
-언제나 누나 팬으로 남아서 곁에서
-지금처럼 늘 한결같이 응원할게요
+앞으로 시간이 얼마나 흘러도 변함없이
+언제나 누나의 팬으로서 곁에서
+지금처럼 늘 한결같이 응원하고 함께할게요
 
 오늘뿐만이 아니라 세상에서 가장 행복한 사람이 되길~~
 
-누나 우리 오래오래 보자!!!!`,
+누나 우리 오래오래 보자!!!`,
         closing: "from 하늘"
       },
       {
@@ -933,14 +905,14 @@
         closing: "from Relax"
       },
       {
-        from: "🐭Noway🐾", flower: "🌸", avatarBg: "#e8f5e9",
+        from: "🐭Noway🐾", flower: "🍀", avatarBg: "#e8f5e9",
         body: `항상 이쁘고 밝은모습 보여주는 뮴공주 ♡
 시청자 고민도 본인일처럼 생각해주는 착한 뮴♡방송보고나면 힐링되는기분이라 너무고마워~~ 이쁜뮴공주♡생일 너무 축하하구 행복하고 즐거운 생일보내♡
 앞으로 방송도 더열심히 볼게용♡화이팅♡`,
         closing: "from Noway"
       },
       {
-        from: "KY 🫦🏎️", flower: "🍀", avatarBg: "#e8f5e9",
+        from: "KY 🫦🏎️", flower: "🌸", avatarBg: "#e8f5e9",
         body: `🎉🎂お誕生日おめでとうございます🎂🎉
 
 ミウミさんの笑顔は、まるで太陽みたいで☀️✨いつもたくさん元気をもらっています🥰💖
@@ -965,12 +937,12 @@ from KY 💌`,
         closing: "from KY"
       },
       {
-        from: "꾸르", flower: "🌸", avatarBg: "#e8f5e9",
+        from: "꾸르", flower: "🌷", avatarBg: "#e8f5e9",
         body: `뮴뮤루뮴 생일축하합니다 생일축하합니다 사랑하는 뮴뮤루뮴뮴 생일축하합니다❤️`,
         closing: "from 꾸르"
       },
       {
-        from: "신디✨️뭐꼬🎶", flower: "🌷", avatarBg: "#e8f5e9",
+        from: "신디✨️뭐꼬🎶", flower: "🌼", avatarBg: "#e8f5e9",
         body: `새로운 방을 잘 안가는 제가 어쩌다 들리게되어 얇디얇은 인연을 이어가고 있는데요ㅋㅋㅋ조금더 굵어져 보도록 노력'은' 해보겠습니다. 생일진심으로 축하드립니다 !! 다른거보다 방송 대박납시다`,
         closing: "from 꼬난"
       },
@@ -1056,8 +1028,6 @@ from KY 💌`,
     // 배경 클릭으로도 닫기
     overlayBg.addEventListener('click', closeLetter);
 
-
-
     // ── 컨페티 파티 ──
     (function () {
       const canvas = document.getElementById('confettiCanvas');
@@ -1125,8 +1095,6 @@ from KY 💌`,
         });
         animId = requestAnimationFrame(loop);
       }
-
-      document.getElementById('partyBtn').addEventListener('click', launch);
 
       // 처음 웹페이지에 접속했을 때 폭죽이 터지도록
       setTimeout(launch, 500);
